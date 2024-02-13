@@ -19,18 +19,36 @@ const patientsTypeDef = gql`
   }
   input EditPatinet {
     email: String
-    age: Int!
+    age: Int
     phone_num: String
     address: String
   }
+  type DataResponsePatient {
+    success: Boolean
+    status: Int
+    message: String
+    data: [Patient]
+  }
+  type DataResponsePatientByID{
+    success:Boolean
+    status:Int
+    message:String
+    data:Patient
+  }
+  type changeInPatient{
+    success:Boolean
+    status:Int
+    message:String
+  }
+
   type Query {
-    getAllPatient: [Patient]
-    getPatientById(ID: ID!): Patient!
+    getAllPatient: DataResponsePatient
+    getPatientById(ID: ID!): DataResponsePatientByID!
   }
   type Mutation {
-    addPatient(newPatient: NewPatient): Patient!
-    delPatient(ID: ID!): Boolean!
-    updPatient(ID: ID!, editPatinet: EditPatinet): Patient!
+    addPatient(newPatient: NewPatient): DataResponsePatientByID!
+    delPatient(ID: ID!): changeInPatient!
+    updPatient(ID: ID!, editPatinet: EditPatinet): changeInPatient!
   }
 `;
 

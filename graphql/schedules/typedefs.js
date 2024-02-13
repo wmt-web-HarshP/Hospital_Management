@@ -18,6 +18,7 @@ const scheduleTypedefs = gql`
     book_from: Int! #day
     book_to: Int! #day
   }
+  
   type Mutation {
     addSchedule(newSchedule: NewSchedule): Schedule
   }

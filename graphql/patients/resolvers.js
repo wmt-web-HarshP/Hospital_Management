@@ -5,10 +5,21 @@ const patientResolver = {
     //get all patient data
     async getAllPatient() {
       try {
-        return Patient.find();
+        const patient = await Patient.find();
+        return {
+          status: 200,
+          success: true,
+          message: "Successfully patients are fetched",
+          data: patient,
+        };
       } catch (error) {
         console.log(error);
-        throw new Error(error);
+        return {
+          status: 500,
+          success: false,
+          message: `Error in creating Patient ${error}`,
+          data: null,
+        };
       }
     },
     //get patient data by ID
@@ -18,21 +29,32 @@ const patientResolver = {
         if (!patient) {
           throw new Error("NO PATIENT FOUND!!");
         }
-        return patient;
+        return {
+          status: 200,
+          message: "Patient fetched successsfully",
+          success: true,
+          data: patient,
+        };
       } catch (error) {
-        console.log("Error in getting the Patient by ID", error);
-        throw new Error(error);
+        console.log(error);
+        return {
+          status: 500,
+          success: false,
+          message: `Error in creating Patient ${error}`,
+          data: null,
+        };
       }
     },
   },
   Mutation: {
     //add new patient
+    // Add new patient
     async addPatient(
       _,
       { newPatient: { name, email, age, gender, phone_num, address } }
     ) {
       try {
-        const newPatient = await Patient.create({
+        const newPatient = new Patient({
           name,
           email,
           age,
@@ -40,22 +62,39 @@ const patientResolver = {
           phone_num,
           address,
         });
-        console.log(newPatient);
-        const res = await newPatient.save();
-        return { id: res.id, ...res._doc };
+        const savedPatient = await newPatient.save();
+        return {
+          status: 200,
+          success: true,
+          message: "Patient added successfully",
+          data: savedPatient,
+        };
       } catch (error) {
         console.log("Error in adding a new patient", error);
-        throw new Error(error);
+        return {
+          status: 500,
+          success: false,
+          message: `Error in adding a new patient: ${error}`,
+          data: null,
+        };
       }
     },
     //delete patient
     async delPatient(_, { ID }) {
       try {
         const delpatient = (await Patient.deleteOne({ _id: ID })).deletedCount;
-        return delpatient;
+        return {
+          message: "Successfully Patient deleted",
+          status: 200,
+          success: true,
+        };
       } catch (error) {
         console.log("Error in deleting a Patient ", error);
-        throw new Error(error);
+        return {
+          message: `Error in deleting a patient: ${error}`,
+          status: 500,
+          success: false,
+        };
       }
     },
     //update patient data by Id
@@ -65,10 +104,18 @@ const patientResolver = {
           { _id: ID },
           { $set: { ...EditPatinet } }
         ).then(() => console.log(`updated Patient`));
-        return EditPatinet;
+        return {
+          message: "Successfully Patient Updated",
+          status: 200,
+          success: true,
+        };
       } catch (error) {
-        console.log("Error in updating the Patient info", error);
-        throw new Error(error);
+        console.log("Error in Updating a Patient ", error);
+        return {
+          message: `Error in Updating a patient: ${error}`,
+          status: 500,
+          success: false,
+        };
       }
     },
   },

@@ -19,9 +19,9 @@ const doctorsTypeDef = gql`
     image: String
   }
   input EditDoctor {
-    email: String!
-    phone: String!
-    address: String!
+    email: String
+    phone: String
+    address: String
     image: String
   }
   type timeinput {
@@ -34,26 +34,38 @@ const doctorsTypeDef = gql`
     date: String
     ScheduleID: ID
     availableAppointments: [timeinput]
-  }
-  type DataResponse {
-    metadata: Metadata
-    data: [String]
     status: Int
+    success: Boolean
     message: String
   }
-  type Metadata {
-    timestamp: String
+  type DataResponse {
+    success: Boolean
+    data: [Doctor]
+    message: String
+    status: Int
+  }
+  type DataResponseByID {
+    success: Boolean
+    data: Doctor #|| [Doctor]
+    message: String
+    status: Int
+  }
+  type changeInDoctor {
+    success: Boolean
+    status: Int
+    message: String
   }
 
   type Query {
     getAllDoctors: DataResponse
-    getDoctorById(ID: ID!): Doctor!
+    getDoctorById(ID: ID!): DataResponseByID!
     getSlots(doctorID: ID!, date: String!, ScheduleID: ID!): getSlots
   }
+
   type Mutation {
-    addDoctor(newDoctor: NewDoctor): Doctor!
-    delDoctor(ID: ID!): Boolean
-    updDoctor(ID: ID!, editDoctor: EditDoctor): Doctor!
+    addDoctor(newDoctor: NewDoctor): DataResponseByID!
+    delDoctor(ID: ID!): changeInDoctor
+    updDoctor(ID: ID!, editDoctor: EditDoctor): changeInDoctor!
   }
 `;
 

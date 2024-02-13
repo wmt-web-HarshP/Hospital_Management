@@ -42,7 +42,8 @@ async function startServer() {
       doctorsResolvers,
       workingHoursResolver,
       scheduleResolvers,
-    ],formatError: (error) => {
+    ],
+    formatError: (error) => {
       if (error.originalError instanceof MongoError) {
         return {
           message: error.message,
