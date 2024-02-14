@@ -15,8 +15,42 @@ const workingHourTypedefs = gql`
     to: String!
     schedule_id: ID
   }
+  input EditWorkingHour {
+    schedule_id: ID
+    from: String
+    to: String
+  }
+  type DataResponseWorkingHours {
+    data: [WorkingHour]
+    success: Boolean
+    message: String
+    status: Int
+  }
+  type DataResponseWorkingHoursByID {
+    data: WorkingHour
+    success: Boolean
+    message: String
+    status: Int
+  }
+  type ChangeInWorkingHours {
+    success: Boolean
+    message: String
+    status: Int
+  }
+
+  type Query {
+    getAllWorkingHours: DataResponseWorkingHours
+    getWorkingHoursById(ID: ID!): DataResponseWorkingHoursByID
+  }
   type Mutation {
-    addNewWorkingHours(newWorkingHours: NewworkingHour): WorkingHour
+    addNewWorkingHours(
+      newWorkingHours: NewworkingHour
+    ): DataResponseWorkingHoursByID
+    updWorkingHours(
+      ID: ID!
+      editWorkingHour: EditWorkingHour
+    ): ChangeInWorkingHours
+    delWokingHours(ID: ID!): ChangeInWorkingHours
   }
 `;
 module.exports = workingHourTypedefs;

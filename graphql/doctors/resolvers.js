@@ -2,7 +2,6 @@ const Doctor = require("../../models/doctors");
 const Schedule = require("../../models/schedules");
 const WorkingHours = require("../../models/workingHours");
 const moment = require("moment");
-const { GraphQLError } = require("graphql");
 
 const doctorResolver = {
   Query: {

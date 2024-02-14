@@ -8,14 +8,17 @@ const app = express();
 const { MongoError } = require("mongodb");
 
 //resolvers and typedefs setup
-const patientsTypeDefs = require("./graphql/patients/typedefs");
-const patientsResolvers = require("./graphql/patients/resolvers");
-
-const scheduleTypedefs = require("./graphql/schedules/typedefs");
-const scheduleResolvers = require("./graphql/schedules/resolvers");
+const appointmentTypeDefs=require('./graphql/appointments/typedefs');
+const appointmentResolvers=require('./graphql/appointments/resolvers')
 
 const doctorsTypeDefs = require("./graphql/doctors/typedefs");
 const doctorsResolvers = require("./graphql/doctors/resolvers");
+
+const patientsTypeDefs = require("./graphql/patients/typedefs");
+const patientsResolvers = require("./graphql/patients/resolvers");
+
+const scheduleTypedefs = require("./graphql/schedules/typedefs"); 
+const scheduleResolvers = require("./graphql/schedules/resolvers");
 
 const workingHoursTypedef = require("./graphql/workingHours/typedefs");
 const workingHoursResolver = require("./graphql/workingHours/resolvers");
@@ -36,12 +39,14 @@ async function startServer() {
       doctorsTypeDefs,
       workingHoursTypedef,
       scheduleTypedefs,
+      appointmentTypeDefs
     ],
     resolvers: [
       patientsResolvers,
       doctorsResolvers,
       workingHoursResolver,
       scheduleResolvers,
+      appointmentResolvers
     ],
     formatError: (error) => {
       if (error.originalError instanceof MongoError) {
