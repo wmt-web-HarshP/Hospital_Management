@@ -6,6 +6,7 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const { MongoError } = require("mongodb");
+const error_handlers=require('./error_handler')
 
 //resolvers and typedefs setup
 const appointmentTypeDefs=require('./graphql/appointments/typedefs');
@@ -27,6 +28,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "public"));
 app.use("/css", express.static(path.join(__dirname, "public", "css")));
 app.use("/js", express.static(path.join(__dirname, "public", "js")));
+app.use(error_handlers)
 
 app.get("/", (req, res) => {
   res.render("index");
