@@ -24,8 +24,24 @@ const appointmentTypeDefs = gql`
     status: Int
     message: String
   }
+  type DataResponceAppointment{
+    data: [Appointment]
+    success:Boolean
+    status:Int
+    message:String
+  }
+  type changeInAppointment {
+    success: Boolean
+    status: Int
+    message: String
+  }
+  type Query{
+    getAppointments: DataResponceAppointment
+    getAppointmentById(ID:ID):DataResponceAppointmentById
+  }
   type Mutation {
     addAppointment(newAppointment: NewAppointment): DataResponceAppointmentById
+    delAppointment(ID: ID!): changeInAppointment
   }
 `;
 

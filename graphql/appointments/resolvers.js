@@ -6,7 +6,46 @@ const WorkingHours = require("../../models/workingHours");
 const moment = require("moment");
 
 const appointmentResolvers = {
-  Query: {},
+  Query: {
+    async getAppointments(_, _args) {
+      try {
+        const appointments = await Appointment.find();
+        return {
+          success: true,
+          data: appointments,
+          status: 200,
+          message: "Successfully Appointments fetched ",
+        };
+      } catch (error) {
+        console.log(error);
+        return {
+          success: false,
+          data: null,
+          status: 500,
+          message: `Error in Fetching Appointments:${error}`,
+        };
+      }
+    },
+    async getAppointmentById(_, { ID }) {
+      try {
+        const appointment = await Appointment.findOne({ _id: ID });
+        if (!appointment) throw "error in fetch Appointment";
+        return {
+          data: appointment,
+          status: 200,
+          success: true,
+          message: "Appointment Found",
+        };
+      } catch (error) {
+        console.log(error);
+        return {
+          success: false,
+          status: 500,
+          message: `Error In Getting The Appointment : ${error}`,
+        };
+      }
+    },
+  },
   Mutation: {
     async addAppointment(
       _,
@@ -83,6 +122,23 @@ const appointmentResolvers = {
           success: false,
           status: 500,
           message: `Error in creating appointment: ${error.message}`,
+        };
+      }
+    },
+    async delAppointment(_, { ID }) {
+      try {
+        const foundAppointment = (await Appointment.deleteOne({_id:ID})).deletedCount;
+        if (!foundAppointment) throw new Error("No such appointment exists!");
+        return {
+          success: true,
+          message: "Appointment successfully deleted",
+          status: 200,
+        };
+      } catch (error) {
+        return {
+          success: false,
+          message: `Failed to delete the appointment:${error.message}`,
+          status: 500,
         };
       }
     },
