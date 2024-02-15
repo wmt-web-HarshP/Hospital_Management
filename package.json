@@ -12,7 +12,9 @@
   "dependencies": {
     "@apollo/server": "^4.10.0",
     "@faker-js/faker": "^8.4.1",
+    "@graphql-tools/resolvers-composition": "^7.0.0",
     "apollo-server": "^3.13.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.1",
     "ejs": "^3.1.9",
     "faker": "^6.6.6",

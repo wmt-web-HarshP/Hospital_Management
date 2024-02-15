@@ -6,11 +6,12 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const { MongoError } = require("mongodb");
-const error_handlers=require('./error_handler')
+var cors = require("cors");
+const error_handlers = require("./error_handler");
 
 //resolvers and typedefs setup
-const appointmentTypeDefs=require('./graphql/appointments/typedefs');
-const appointmentResolvers=require('./graphql/appointments/resolvers')
+const appointmentTypeDefs = require("./graphql/appointments/typedefs");
+const appointmentResolvers = require("./graphql/appointments/resolvers");
 
 const doctorsTypeDefs = require("./graphql/doctors/typedefs");
 const doctorsResolvers = require("./graphql/doctors/resolvers");
@@ -18,20 +19,21 @@ const doctorsResolvers = require("./graphql/doctors/resolvers");
 const patientsTypeDefs = require("./graphql/patients/typedefs");
 const patientsResolvers = require("./graphql/patients/resolvers");
 
-const scheduleTypedefs = require("./graphql/schedules/typedefs"); 
+const scheduleTypedefs = require("./graphql/schedules/typedefs");
 const scheduleResolvers = require("./graphql/schedules/resolvers");
 
 const workingHoursTypedef = require("./graphql/workingHours/typedefs");
 const workingHoursResolver = require("./graphql/workingHours/resolvers");
 //static file setup
+app.use(cors());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "public"));
 app.use("/css", express.static(path.join(__dirname, "public", "css")));
 app.use("/js", express.static(path.join(__dirname, "public", "js")));
-app.use(error_handlers)
+app.use(error_handlers);
 
-app.get("/", (req, res) => {
-  res.render("index");
+app.get("/api", (req, res) => {
+  res.send("Hello from Harsh");
 });
 
 async function startServer() {
@@ -41,14 +43,14 @@ async function startServer() {
       doctorsTypeDefs,
       workingHoursTypedef,
       scheduleTypedefs,
-      appointmentTypeDefs
+      appointmentTypeDefs,
     ],
     resolvers: [
       patientsResolvers,
       doctorsResolvers,
       workingHoursResolver,
       scheduleResolvers,
-      appointmentResolvers
+      appointmentResolvers,
     ],
     formatError: (error) => {
       if (error.originalError instanceof MongoError) {

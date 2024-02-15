@@ -1,6 +1,7 @@
 const { gql } = require("apollo-server");
 
 const appointmentTypeDefs = gql`
+ 
   type Appointment {
     doctor: ID!
     schedule: ID
@@ -24,20 +25,20 @@ const appointmentTypeDefs = gql`
     status: Int
     message: String
   }
-  type DataResponceAppointment{
+  type DataResponceAppointment {
     data: [Appointment]
-    success:Boolean
-    status:Int
-    message:String
+    success: Boolean
+    status: Int
+    message: String
   }
   type changeInAppointment {
     success: Boolean
     status: Int
     message: String
   }
-  type Query{
+  type Query {
     getAppointments: DataResponceAppointment
-    getAppointmentById(ID:ID):DataResponceAppointmentById
+    getAppointmentById(ID: ID): DataResponceAppointmentById
   }
   type Mutation {
     addAppointment(newAppointment: NewAppointment): DataResponceAppointmentById
